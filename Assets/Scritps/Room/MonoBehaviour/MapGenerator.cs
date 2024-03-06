@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,6 +17,8 @@ public class MapGenerator : MonoBehaviour
     private float columnWidth;
     //生成点
     private Vector3 generatePoint;
+    //边界
+    public float border;
 
     private void Awake()
     {
@@ -26,15 +29,23 @@ public class MapGenerator : MonoBehaviour
         columnWidth=screenWidth/(mapConfig.roomBluePrint.Count+1);
     }
 
+    private void Start()
+    {
+        GreatMap();
+    }
+
     private void GreatMap()
     {
         for (int column = 0; column < mapConfig.roomBluePrint.Count; column++)
         {
             var bluePrint = mapConfig.roomBluePrint[column];
             var amount = Random.Range(bluePrint.min, bluePrint.max);
-            for (int i = 0; i < amount; amount++)
+            var startHeight = screenHeight / 2 - screenHeight / (amount + 1);
+            generatePoint = new Vector3(-screenWidth / 2 + border+columnWidth*column, startHeight, 0);
+            var newPoint = generatePoint;
+            for (int i = 0; i < amount; i++)
             {
-                var room = Instantiate(roomPrefab, transform);
+                var room = Instantiate(roomPrefab, newPoint,quaternion.identity,transform);
             }
         }
 

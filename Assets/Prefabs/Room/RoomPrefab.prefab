@@ -135,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   line: 0
   column: 0
-  roomData: {fileID: 11400000, guid: 7f7234904e6310b499aa44b03a7665a6, type: 2}
+  roomData: {fileID: 11400000, guid: 055ad35e74045c249b6fdf2214e19c99, type: 2}
   roomState: 0
 --- !u!70 &2149692840123518169
 CapsuleCollider2D:

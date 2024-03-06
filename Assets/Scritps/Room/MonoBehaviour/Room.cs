@@ -5,10 +5,13 @@ public class Room : MonoBehaviour
 {
     //行
     public int line;
-    //纵
+    //列
     public int column;
+    //子物体图片
     private SpriteRenderer spriteRenderer;
+    //房间数据(ScriptableObject)
     public RoomDataSO roomData;
+    //房间状态枚举
     public RoomState roomState;
 
     private void Start()

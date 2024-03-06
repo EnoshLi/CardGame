@@ -1,18 +1,21 @@
+using System;
+//位标志枚举
+[Flags]
 //房间的类型
 public enum RoomType
 {
     //普通敌人
-    MinorEnemy,
+    MinorEnemy=1,
     //精英敌人
-    EliteEnemy,
+    EliteEnemy=2,
     //商店
-    Shop,
+    Shop=4,
     //财宝
-    Treasure,
+    Treasure=8,
     //休息室
-    RestRoom,
+    RestRoom=16,
     //Boss
-    Boos
+    Boos=32
 }
 //房间的访问状态
 public enum RoomState

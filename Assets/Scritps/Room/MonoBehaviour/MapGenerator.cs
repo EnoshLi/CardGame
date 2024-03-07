@@ -7,10 +7,16 @@ using Random = UnityEngine.Random;
 
 public class MapGenerator : MonoBehaviour
 {
+    [Header("地图房间配置表")]
     //地图信息(包含的房间数，行列数，怪物宝箱的布置)
     public MapConfigSO mapConfig;
+    
+    [Header("预制体")]
     //房间的样式(Boss,Enemy,restRoom)
     public Room roomPrefab;
+    public LineRenderer linePrefab;
+    
+    [Header("基本变量")]
     //屏幕的长
     private float screenHeight;
     //屏幕的宽
@@ -22,8 +28,9 @@ public class MapGenerator : MonoBehaviour
     //边界
     public float border;
     //房间列表
-    public List<Room> rooms;
-
+    private List<Room> rooms =new List<Room>();
+    //连接线列表
+    private List<LineRenderer> lines = new();
     private void Awake()
     {
         //获取相机高度的尺寸
@@ -36,7 +43,6 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
-        rooms = new();
         GreatMap();
     }
     /// <summary>
@@ -44,6 +50,8 @@ public class MapGenerator : MonoBehaviour
     /// </summary>
     private void GreatMap()
     {
+        //创建前一列房间列表
+        List<Room> previousColumnRooms = new();
         for (int column = 0; column < mapConfig.roomBluePrint.Count; column++)
         {
             var bluePrint = mapConfig.roomBluePrint[column];
@@ -54,6 +62,8 @@ public class MapGenerator : MonoBehaviour
             var newPoint = generatePoint;
             //房间Y轴的间距
             var roomGapY = screenHeight / (amount + 1);
+            //生成当前房间配置表
+            List<Room> currentColumnRooms = new();
             //生成所有房间
             for (int i = 0; i < amount; i++)
             {
@@ -65,12 +75,68 @@ public class MapGenerator : MonoBehaviour
                 {
                     newPoint.x = generatePoint.x + Random.Range(-border/2, border/2);
                 }
+                //每个房间Y的坐标
                 newPoint.y = startHeight - roomGapY * i;
                 var room = Instantiate(roomPrefab, newPoint,quaternion.identity,transform);
                 rooms.Add(room);
+                currentColumnRooms.Add(room);
+            }
+            //判断当前列是否为第一列
+            if (previousColumnRooms.Count>0)
+            {
+                //房间连线
+                GreateConnections(previousColumnRooms,currentColumnRooms);
+            }
+
+            previousColumnRooms = currentColumnRooms;
+        }
+    }
+    /// <summary>
+    /// 房间连线
+    /// </summary>
+    /// <exception cref="NotImplementedException"></exception>
+    private void GreateConnections(List<Room> column1,List<Room> column2)
+    {
+        HashSet<Room> connectedColumn2Rooms = new();
+        foreach (var room in column1)
+        {
+           var targetRoom = ConnectToRandomRoomOne(room,column2);
+           connectedColumn2Rooms.Add(targetRoom);
+        }
+
+        foreach (var room in column2)
+        {
+            if (!connectedColumn2Rooms.Contains(room))
+            {
+                ConnectToRandomRoomTwo(room,column1);
             }
         }
     }
+
+    private Room ConnectToRandomRoomTwo(Room room, List<Room> column1)
+    {
+        Room targetRoom;
+        targetRoom = column1[Random.Range(0,column1.Count)];
+        //创建房间间的连线
+        var line = Instantiate(linePrefab, transform);
+        line.SetPosition(0,room.transform.position);
+        line.SetPosition(1,targetRoom.transform.position);
+        lines.Add(line);
+        return targetRoom;
+    }
+
+    private Room ConnectToRandomRoomOne(Room room, List<Room> column2)
+    {
+        Room targetRoom;
+        targetRoom = column2[Random.Range(0,column2.Count)];
+        //创建房间间的连线
+        var line = Instantiate(linePrefab, transform);
+        line.SetPosition(0,targetRoom.transform.position);
+        line.SetPosition(1,room.transform.position);
+        lines.Add(line);
+        return targetRoom;
+    }
+
     /// <summary>
     /// 重新生成房间(房间每次随机，肉鸽玩法)
     /// </summary>
@@ -81,7 +147,13 @@ public class MapGenerator : MonoBehaviour
         {
             Destroy(room.gameObject);
         }
+
+        foreach (var line in lines)
+        {
+            Destroy(line.gameObject);
+        }
         rooms.Clear();
+        lines.Clear();
         GreatMap();
     }
 }

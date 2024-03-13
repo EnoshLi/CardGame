@@ -31,6 +31,9 @@ public class MapGenerator : MonoBehaviour
     private List<Room> rooms =new List<Room>();
     //连接线列表
     private List<LineRenderer> lines = new();
+    //房间数据
+    public List<RoomDataSO> roomDataList = new();
+    private Dictionary<RoomType, RoomDataSO> roomDataDictionary=new ();
     private void Awake()
     {
         //获取相机高度的尺寸
@@ -39,6 +42,10 @@ public class MapGenerator : MonoBehaviour
         screenWidth = Camera.main.aspect*screenHeight;
         //获取列的间距
         columnWidth=screenWidth/(mapConfig.roomBluePrint.Count);
+        foreach (var roomData in roomDataList)
+        {
+            roomDataDictionary.Add(roomData.roomType,roomData);
+        }
     }
 
     private void Start()
@@ -67,6 +74,7 @@ public class MapGenerator : MonoBehaviour
             //生成所有房间
             for (int i = 0; i < amount; i++)
             {
+                //判断是否为最后一列
                 if (column==mapConfig.roomBluePrint.Count-1)
                 {
                     newPoint.x = screenWidth / 2 - border * 2;
@@ -78,6 +86,8 @@ public class MapGenerator : MonoBehaviour
                 //每个房间Y的坐标
                 newPoint.y = startHeight - roomGapY * i;
                 var room = Instantiate(roomPrefab, newPoint,quaternion.identity,transform);
+                RoomType newRoomtype = GetRandomRoomType(mapConfig.roomBluePrint[column].roomType);
+                room.SetupRoom(column,i,GetRoomData(newRoomtype));
                 rooms.Add(room);
                 currentColumnRooms.Add(room);
             }
@@ -113,18 +123,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private Room ConnectToRandomRoomTwo(Room room, List<Room> column1)
-    {
-        Room targetRoom;
-        targetRoom = column1[Random.Range(0,column1.Count)];
-        //创建房间间的连线
-        var line = Instantiate(linePrefab, transform);
-        line.SetPosition(0,room.transform.position);
-        line.SetPosition(1,targetRoom.transform.position);
-        lines.Add(line);
-        return targetRoom;
-    }
-
+    #region 保证连线方向的一致性
     private Room ConnectToRandomRoomOne(Room room, List<Room> column2)
     {
         Room targetRoom;
@@ -136,6 +135,19 @@ public class MapGenerator : MonoBehaviour
         lines.Add(line);
         return targetRoom;
     }
+    private Room ConnectToRandomRoomTwo(Room room, List<Room> column1)
+    {
+        Room targetRoom;
+        targetRoom = column1[Random.Range(0,column1.Count)];
+        //创建房间间的连线
+        var line = Instantiate(linePrefab, transform);
+        line.SetPosition(0,room.transform.position);
+        line.SetPosition(1,targetRoom.transform.position);
+        lines.Add(line);
+        return targetRoom;
+    }
+    #endregion
+    
 
     /// <summary>
     /// 重新生成房间(房间每次随机，肉鸽玩法)
@@ -155,5 +167,18 @@ public class MapGenerator : MonoBehaviour
         rooms.Clear();
         lines.Clear();
         GreatMap();
+    }
+
+    private RoomDataSO GetRoomData(RoomType roomType)
+    {
+        return roomDataDictionary[roomType];
+    }
+
+    private RoomType GetRandomRoomType(RoomType flags)
+    {
+        string[] option = flags.ToString().Split(',');
+        string randomOption =option[Random.Range(0, option.Length)] ;
+        RoomType roomType = (RoomType)Enum.Parse(typeof(RoomType),randomOption);
+        return roomType;
     }
 }

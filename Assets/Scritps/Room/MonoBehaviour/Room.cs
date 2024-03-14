@@ -13,6 +13,8 @@ public class Room : MonoBehaviour
     public RoomDataSO roomData;
     //房间状态枚举
     public RoomState roomState;
+    [Header("广播")]
+    public ObjectEventSO loadRoomEvent;
 
     private void Start()
     {
@@ -27,6 +29,7 @@ public class Room : MonoBehaviour
     private void OnMouseDown()
     {
         Debug.Log("点击房间"+roomData.roomType);
+        loadRoomEvent.RaseEvent(roomData,this);
     }
 /// <summary>
 /// 外部创建房间时调用房间配置

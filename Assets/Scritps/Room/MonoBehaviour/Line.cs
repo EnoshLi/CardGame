@@ -15,5 +15,6 @@ public class Line : MonoBehaviour
             offset.x += offsetSpeed * Time.deltaTime;
             lineRenderer.material.mainTextureOffset = offset;
         }
+        
     }
 }

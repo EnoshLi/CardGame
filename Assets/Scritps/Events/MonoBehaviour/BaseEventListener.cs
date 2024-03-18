@@ -22,6 +22,6 @@ public class BaseEventListener<T> : MonoBehaviour
 
     private void OnEventRised(T value)
     {
-        response?.Invoke(value);
+        response.Invoke(value);
     }
 }

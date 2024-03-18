@@ -1,20 +1,22 @@
-using System;
 using UnityEngine;
 
-public class Line : MonoBehaviour
+namespace Scritps.Room.MonoBehaviour
 {
-    public LineRenderer lineRenderer;
-    public float offsetSpeed=0.1f;
-
-    private void Update()
+    public class Line : UnityEngine.MonoBehaviour
     {
-        if (lineRenderer!=null)
+        public LineRenderer lineRenderer;
+        public float offsetSpeed=0.1f;
+
+        private void Update()
         {
-            //获取当前纹理偏移
-            var offset = lineRenderer.material.mainTextureOffset;
-            offset.x += offsetSpeed * Time.deltaTime;
-            lineRenderer.material.mainTextureOffset = offset;
-        }
+            if (lineRenderer!=null)
+            {
+                //获取当前纹理偏移
+                var offset = lineRenderer.material.mainTextureOffset;
+                offset.x += offsetSpeed * Time.deltaTime;
+                lineRenderer.material.mainTextureOffset = offset;
+            }
         
+        }
     }
 }

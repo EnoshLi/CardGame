@@ -135,6 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   line: 0
   column: 0
+  linkTo: []
   roomData: {fileID: 11400000, guid: 055ad35e74045c249b6fdf2214e19c99, type: 2}
   roomState: 0
   loadRoomEvent: {fileID: 11400000, guid: 1889433a556dcb24f987186f80f76563, type: 2}

@@ -1,12 +1,18 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class Room : MonoBehaviour
-{
-    //行
-    public int line;
+{   
     //列
     public int column;
+    //行
+    public int line;
+    
+
+    public List<Vector2Int> linkTo=new();
     //子物体图片
     private SpriteRenderer spriteRenderer;
     //房间数据(ScriptableObject)
@@ -15,11 +21,7 @@ public class Room : MonoBehaviour
     public RoomState roomState;
     [Header("广播")]
     public ObjectEventSO loadRoomEvent;
-
-    private void Start()
-    {
-        SetupRoom(0,0,roomData);
-    }
+    
 
     private void Awake()
     {
@@ -28,8 +30,12 @@ public class Room : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("点击房间"+roomData.roomType);
-        loadRoomEvent.RaseEvent(roomData,this);
+         Debug.Log("点击房间"+roomData.roomType);
+        if (roomState == RoomState.Attainable)
+        {
+            loadRoomEvent.RaseEvent(this,this);
+        }
+        
     }
 /// <summary>
 /// 外部创建房间时调用房间配置
@@ -37,11 +43,19 @@ public class Room : MonoBehaviour
 /// <param name="line"></param>
 /// <param name="column"></param>
 /// <param name="roomData"></param>
-    public void SetupRoom(int line,int column,RoomDataSO roomData)
+    public void SetupRoom(int column,int line,RoomDataSO roomData)
     {
         this.line = line;
         this.column = column;
         this.roomData = roomData;
         spriteRenderer.sprite = roomData.roomIcon;
+        spriteRenderer.color = roomState switch
+        {
+            RoomState.Attainable => Color.white,
+            RoomState.visited => new Color(0.5f, 0.5f, 0.5f, 1f),
+            RoomState.Locked => new Color(0.5f, 0.5f, 0.5f, 1f),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
     }
 }

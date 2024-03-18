@@ -5,17 +5,18 @@ using UnityEngine;
 public class MapLayoutSO : ScriptableObject
 {
     //存储地图信息
-    public List<MapRoomData> mapRoomDatas = new();
+    public List<MapRoomData> mapRoomDatasList = new();
     //存储地图连线的信息
-    public List<LinePosition> linePositions = new();
+    public List<LinePosition> linePositionsList = new();
 }
 [System.Serializable]
 public class MapRoomData
 {
     public float posX, posY;
-    public int line, colum;
+    public int colum, line;
     public RoomDataSO roomData;
     public RoomState roomState;
+    public List<Vector2Int> linkTo;
 }
 [System.Serializable]
 public class LinePosition

@@ -27,3 +27,10 @@ public enum RoomState
     //可访问
     Attainable
 }
+
+public enum CardType
+{
+    Attack,
+    Defense,
+    Abilities
+}

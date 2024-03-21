@@ -13,7 +13,7 @@ public class Card : MonoBehaviour
         Init(cardDataSo);
     }
 
-    private void Init(CardDataSO data)
+    public void Init(CardDataSO data)
     {
         cardDataSo = data;
         cardNameText.text = data.cardName;

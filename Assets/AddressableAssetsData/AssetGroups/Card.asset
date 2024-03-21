@@ -21,6 +21,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - CardData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a7409f8ccf7c0f47b17a8cf92226eab
+    m_Address: Attack
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CardData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94aa385d5fdce794fac73982467473bd
+    m_Address: Apple
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CardData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ef0f1d7ddf40724288c9989ceb9ff57
+    m_Address: IncreasesDamage
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CardData
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: de80b268f5032f2449ce5fca5666ff18, type: 2}
   m_SchemaSet:

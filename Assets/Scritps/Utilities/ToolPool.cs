@@ -4,6 +4,7 @@ using UnityEngine.Pool;
 
 namespace Scritps.Utilities
 {
+    [DefaultExecutionOrder(-1000)]
     public class ToolPool : MonoBehaviour
     {
         [SerializeField] private GameObject objPrefab;

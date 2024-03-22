@@ -21,6 +21,11 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        currentLibrary.cardLibraryList.Clear();
+    }
+
     #region 获取项目卡牌
     private void InitializeCardDataList()
     {
@@ -41,10 +46,15 @@ public class CardManager : MonoBehaviour
     
 
     #endregion
-
+    /// <summary>
+    /// 抽卡时调用函数获取卡牌
+    /// </summary>
+    /// <returns></returns>
     public GameObject GetCardObject()
     {
-        return toolPool.GetObjectFromPool();
+        var cardObj = toolPool.GetObjectFromPool();
+        cardObj.transform.localScale=Vector3.zero;
+        return cardObj;
     }
 
     public void DiscardCard(GameObject cardObj)

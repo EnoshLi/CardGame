@@ -11,6 +11,14 @@ public class CardLayoutManager : MonoBehaviour
     public Vector3 centerPoint;
     [SerializeField]private List<Vector3> cardPosition = new();
     private List<Quaternion> cardRotation=new();
+    [Header("弧形参数")] 
+    public float angleBetweenCards = 7f;
+    public float radius = 17f;
+
+    private void Awake()
+    {
+        centerPoint = isHorizontal ? Vector3.up * -4.5f : Vector3.up * -21.5f;
+    }
 
     public CardTransform getCardTransform(int index,int totalCards)
     {
@@ -35,6 +43,27 @@ public class CardLayoutManager : MonoBehaviour
                 cardPosition.Add(pos);
                 cardRotation.Add(rotation);
             }
+        } 
+        else
+        {
+            float cardAngle = (numberOfCards - 1) * angleBetweenCards / 2;
+
+            for (int i = 0; i < numberOfCards; i++)
+            {
+                var pos = FanCardPosition(cardAngle - i * angleBetweenCards);
+
+                var rotation = Quaternion.Euler(0, 0, cardAngle - i * angleBetweenCards);
+                cardPosition.Add(pos);
+                cardRotation.Add(rotation);
+            }
         }
+    }
+    private Vector3 FanCardPosition(float angle)
+    {
+        return new Vector3(
+            centerPoint.x - Mathf.Sin(Mathf.Deg2Rad * angle) * radius,
+            centerPoint.y + Mathf.Cos(Mathf.Deg2Rad * angle) * radius,
+            0
+        );
     }
 }

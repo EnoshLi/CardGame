@@ -71,15 +71,18 @@ public class CardDeck : MonoBehaviour
             CardTransform cardTransform = cardLayoutManager.getCardTransform(i, handCardObjectList.Count);
             //currentCard.transform.SetPositionAndRotation(cardTransform.pos,cardTransform.rotation);
             //抽卡动画,从抽牌堆中移动到手牌堆
+            currentCard.isAnimating = true;
             currentCard.transform.DOScale(Vector3.one, 0.2f).SetDelay(delay).onComplete= () =>
             {
                 //卡牌的移动
-                currentCard.transform.DOMove(cardTransform.pos, 0.5f);
+                currentCard.transform.DOMove(cardTransform.pos, 0.5f).onComplete=()=>currentCard.isAnimating=false;
                 //卡牌的旋转
                 currentCard.transform.DORotateQuaternion(cardTransform.rotation, 0.5f);
             };
             //手牌的排序
             currentCard.GetComponent<SortingGroup>().sortingOrder = i;
+            //更新卡牌位置和旋转
+            currentCard.UpdatePositionRotation(cardTransform.pos,cardTransform.rotation);
         }
     }
 }

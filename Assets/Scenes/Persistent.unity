@@ -545,6 +545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardManager: {fileID: 445753393}
   cardLayoutManager: {fileID: 944878735}
+  DeckPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &944878734
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +580,8 @@ MonoBehaviour:
   cardSpacing: 2
   centerPoint: {x: 0, y: -4.5, z: 0}
   cardPosition: []
+  angleBetweenCards: 7
+  radius: 17
 --- !u!4 &944878736
 Transform:
   m_ObjectHideFlags: 0

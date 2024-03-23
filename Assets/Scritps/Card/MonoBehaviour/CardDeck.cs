@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
+
 
 public class CardDeck : MonoBehaviour
 {
@@ -39,29 +41,38 @@ public class CardDeck : MonoBehaviour
             }
         }
         //TODO洗牌/更新抽牌堆OR弃牌堆的显示数字
+        ShuffleDeck();
     }
     //抽牌
-    private void DrawCard(int amount)
+    public void DrawCard(int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            if (drawDeck.Count==0)
-            {
-                //TODO洗牌/更新抽牌堆和弃牌堆
-            }
-
             CardDataSO currentCardData = drawDeck[0];
             drawDeck.RemoveAt(0);
+            if (drawDeck.Count == 0)
+            {
+                foreach (var item in discardDeck)
+                {
+                    drawDeck.Add(item);
+                }
+                ShuffleDeck();
+            }
+
+            //更新UI数字
+            //drawCountEvent.RaisEvent(drawDeck.Count, this);
+
             var card = cardManager.GetCardObject().GetComponent<Card>();
             //初始化
             card.Init(currentCardData);
-            //开牌在抽牌堆中，在SetCardLayout()方法中用DOT动画移动到手牌堆
             card.transform.position = DeckPosition;
+
             handCardObjectList.Add(card);
             var delay = i * 0.2f;
             SetCardLayout(delay);
         }
     }
+   
     //手牌布局
     private void SetCardLayout(float delay)
     {
@@ -84,5 +95,31 @@ public class CardDeck : MonoBehaviour
             //更新卡牌位置和旋转
             currentCard.UpdatePositionRotation(cardTransform.pos,cardTransform.rotation);
         }
+    }
+    /// <summary>
+    /// 洗牌
+    /// </summary>
+    private void ShuffleDeck()
+    {
+        discardDeck.Clear();
+        //TODO:更新UI显示数量
+        for (int i = 0; i < drawDeck.Count; i++)
+        {
+            CardDataSO temp = drawDeck[i];
+            int randomIndex = Random.Range(i, drawDeck.Count);
+            drawDeck[i] = drawDeck[randomIndex];
+            drawDeck[randomIndex] = temp;
+        }
+    }
+    /// <summary>
+    /// 弃牌堆逻辑，事件函数
+    /// </summary>
+    /// <param name="card"></param>
+    public void DiscardCard(Card card)
+    {
+        discardDeck.Add(card.cardDataSo);
+        handCardObjectList.Remove(card);
+        cardManager.DiscardCard(card.gameObject);
+        SetCardLayout(0f);
     }
 }

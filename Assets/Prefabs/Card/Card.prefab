@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 3282831346290066196}
   - component: {fileID: 5590713576622062805}
   - component: {fileID: 6610289246719689897}
+  - component: {fileID: 658508782857027003}
   m_Layer: 6
   m_Name: Card
   m_TagString: Untagged
@@ -176,8 +177,8 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205604719109656124}
   m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2144375471
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_SortAtRoot: 0
 --- !u!114 &6610289246719689897
@@ -198,6 +199,24 @@ MonoBehaviour:
   cost: {fileID: 5628033369759547263}
   description: {fileID: 2339202429675697091}
   cardType: {fileID: 8092041167772731976}
+  originalPosition: {x: 0, y: 0, z: 0}
+  origionalRotation: {x: 0, y: 0, z: 0, w: 0}
+  originalLayerOrder: 0
+  isAnimating: 0
+--- !u!114 &658508782857027003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205604719109656124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1d32e79e0c64774e97dcd39f7031dba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canMove: 0
+  currentCard: {fileID: 0}
 --- !u!1 &326613644687063422
 GameObject:
   m_ObjectHideFlags: 0

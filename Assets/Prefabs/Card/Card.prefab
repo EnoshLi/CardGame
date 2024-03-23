@@ -217,6 +217,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canMove: 0
   currentCard: {fileID: 0}
+  canExecute: 0
+  arrowPrefab: {fileID: 6028908017853238813, guid: 256a15ef1c64a9f4dbf44cad858d62ce, type: 3}
+  currentArrow: {fileID: 0}
 --- !u!1 &326613644687063422
 GameObject:
   m_ObjectHideFlags: 0

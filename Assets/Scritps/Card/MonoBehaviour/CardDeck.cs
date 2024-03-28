@@ -4,6 +4,7 @@ using DG.Tweening;
 
 using UnityEngine;
 using UnityEngine.Rendering;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 
@@ -112,11 +113,12 @@ public class CardDeck : MonoBehaviour
         }
     }
     /// <summary>
-    /// 弃牌堆逻辑，事件函数
+    /// 弃牌堆逻辑，事件函数,手牌打出回收
     /// </summary>
     /// <param name="card"></param>
-    public void DiscardCard(Card card)
+    public void DiscardCardFanc(object obj)
     {
+        Card card = obj as Card ;
         discardDeck.Add(card.cardDataSo);
         handCardObjectList.Remove(card);
         cardManager.DiscardCard(card.gameObject);

@@ -28,9 +28,16 @@ public enum RoomState
     Attainable
 }
 
+//卡牌类型
 public enum CardType
 {
     Attack,
     Defense,
     Abilities
+}
+public enum EffectTargetType
+{
+    Self,
+    Target,
+    All
 }

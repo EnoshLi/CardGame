@@ -5,14 +5,17 @@ using UnityEngine.EventSystems;
 public class CardDragHandler : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 {
     public bool canMove;
-    public Card currentCard;
+    [HideInInspector]public Card currentCard;
     public bool canExecute;
     public GameObject arrowPrefab;
     [HideInInspector]public GameObject currentArrow;
+    private CharacterBase targetCharacter;
+    //private Player player;
 
     private void Awake()
     {
         currentCard = GetComponent<Card>();
+        
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -42,6 +45,18 @@ public class CardDragHandler : MonoBehaviour,IBeginDragHandler,IDragHandler,IEnd
             //执行条件
             canExecute = worldPos.y > 0.1f;
         }
+        else
+        {
+            if (eventData.pointerEnter==null)return;
+            if (eventData.pointerEnter.CompareTag("Enemy"))
+            {
+                canExecute = true;
+                targetCharacter=eventData.pointerEnter.GetComponent<CharacterBase>();
+                return;
+            }
+            canExecute = false;
+            targetCharacter = null;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -52,7 +67,7 @@ public class CardDragHandler : MonoBehaviour,IBeginDragHandler,IDragHandler,IEnd
         }
         if (canExecute)
         {
-            
+            currentCard.ExecuteCardEffects(currentCard.player,targetCharacter);
         }
         //throw new System.NotImplementedException();
         currentCard.RestCardTransform();

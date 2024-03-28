@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -15,6 +16,8 @@ public class Card : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
     public Quaternion origionalRotation;
     public int originalLayerOrder;
     public bool isAnimating;
+    public Player player;
+    [Header("广播事件")] public ObjectEventSO discardCardEvent;
 
     private void Start()
     {
@@ -34,6 +37,7 @@ public class Card : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
             CardType.Abilities => "技能",
             _ => throw new ArgumentOutOfRangeException()
         };
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
     public void UpdatePositionRotation(Vector3 position, Quaternion quaternion)
@@ -69,5 +73,15 @@ public class Card : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
     {
         transform.SetPositionAndRotation(originalPosition,origionalRotation);
         GetComponent<SortingGroup>().sortingOrder = originalLayerOrder;
+    }
+
+    public void ExecuteCardEffects( CharacterBase from,CharacterBase target)
+    {
+        //TODO：减少对应能量，通知回收卡牌
+        discardCardEvent.RaseEvent(this,this);
+        foreach (var effect in cardDataSo.effects)
+        {
+            effect.Execute(from,target);
+        }
     }
 }
